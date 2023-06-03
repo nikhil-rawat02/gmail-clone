@@ -1,4 +1,7 @@
-#Some key details about this project 👍
+# Deployed on vercel 
+[Gmail-clone]:https://gmail-clone-swart.vercel.app/
+
+# Some key details about this project 👍
 1. Gmail Clone using React JS and Material UI is an email client that is built to mimic the look and feel of the popular Gmail email service.
 2. React JS is used as the front-end framework to create the Gmail Clone's dynamic and responsive user interface. This means that the app will provide a smooth and fast experience for users, even when working with large amounts of data.
 3. Firebase is used here to maintain the connection with backend.
