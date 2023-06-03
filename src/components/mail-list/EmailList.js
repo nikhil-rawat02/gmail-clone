@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState} from 'react'
 import './EmailList.css'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import RedoIcon from '@mui/icons-material/Redo';
@@ -11,44 +11,23 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 
-import { CheckBox } from '@mui/icons-material'
+import { CheckBox, Inbox } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 
 import Section from './section/Section';
 import EmailRow from './section/email-row/EmailRow';
-import { db } from '../../firebase';
-import { getDocs, collection , orderBy, query} from 'firebase/firestore/lite';
+
 import { useSelector } from 'react-redux';
 
 function EmailList() {
     const [emails, setEmails] = useState({});
-    useEffect(() => {
-        const q = query(collection(db, "email"), orderBy("timestamp", "desc"));
-            console.log("in email list")
-        const docSnap = getDocs(q);
-
-        docSnap.then(data => {
-            const setEmailsObject = [];
-            data.docs.forEach((mail) => {
-                const data = mail._document.data.value.mapValue.fields;
-                const to = data.to.stringValue;
-                const message = data.message.stringValue;
-                const subject = data.subject.stringValue;
-                const timestamp = data.timestamp.timestampValue;
-                const mailDetails = {
-                    "to": to,
-                    "subject": subject,
-                    "message": message,
-                    "timestamp": timestamp,
-                }
-                setEmailsObject.push(mailDetails);
-            })
-            setEmails(setEmailsObject);
-        }).catch(error => 
-            console.log(error)
-        )
-    }, [])
-
+    const inbox = useSelector((state) => state.mail.inboxMail)
+    
+    useEffect(()=>{
+        if(inbox){
+            setEmails(inbox);
+        }
+    },[inbox])
     return (
         <div className='email-list'>
             <div className="email-list-settings">
@@ -86,7 +65,7 @@ function EmailList() {
             </div>
             <div className="email-list-list">
                 {
-                    Object.entries(emails)
+                    emails && Object.entries(emails)
                         .map(arr => (
                             <EmailRow
                                 id={arr[0]}

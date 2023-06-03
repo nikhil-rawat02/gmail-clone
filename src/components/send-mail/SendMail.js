@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
 import { useForm } from "react-hook-form";
 import { useDispatch } from 'react-redux';
-import { setDoc, doc, Timestamp } from 'firebase/firestore/lite';
+import { setDoc, doc, Timestamp,getDocs, collection , orderBy, query } from 'firebase/firestore/lite';
 import { db } from '../../firebase';
 
 function SendMail() {
@@ -37,6 +37,36 @@ function SendMail() {
         dispatch({
             type: "componseMailclose",
         })
+            
+        // get all mails from firebase
+
+        const q = query(collection(db, "email"), orderBy("timestamp", "desc"));
+        const docSnap = getDocs(q);
+
+        docSnap.then(data => {
+            const setEmailsObject = [];
+            data.docs.forEach((mail) => {
+                const data = mail._document.data.value.mapValue.fields;
+                const to = data.to.stringValue;
+                const message = data.message.stringValue;
+                const subject = data.subject.stringValue;
+                const timestamp = data.timestamp.timestampValue;
+                const mailDetails = {
+                    "to": to,
+                    "subject": subject,
+                    "message": message,
+                    "timestamp": timestamp,
+                }
+                setEmailsObject.push(mailDetails);
+            })
+            // updated redux 
+            dispatch({
+                type:"loadInbox",
+                payload:setEmailsObject,
+            })
+        }).catch(error => 
+            console.log(error)
+        )
     }
     return (
         <div className='send-mail'>

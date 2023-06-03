@@ -1,12 +1,16 @@
 import { createReducer } from "@reduxjs/toolkit";
 
 const initialState = {
+    inboxMail:{},
     isComposeMailOpen: false,
     selectedMail : null,
 }
 
 export const mailReducer = createReducer(initialState, {
 
+    loadInbox : (state,action) => {
+        state.inboxMail = action.payload;
+    },
     selectMail: (state,action) => {
         state.selectedMail = action.payload;
     },
