@@ -10,4 +10,5 @@
 # Deployed on vercel 
 [Gmail-clone-deploy](https://gmail-clone-swart.vercel.app/)
 
-# Screen Shots
+https://github.com/nikhil-rawat02/gmail-clone/assets/117645790/994bc3b2-b2b0-46f3-9655-8110dd451d4a
+
